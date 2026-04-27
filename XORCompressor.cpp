@@ -602,6 +602,8 @@ class UserInterface {
         auto encoded = compressor.encodeWords(text);
         auto meta = compressor.computeMeta(encoded);
 
+        compressor.printEncoded(encoded);
+
         auto bytes = compressor.encodeToBytes(encoded, meta);
 
         std::string binary = utils.bytesToBinary(bytes);
