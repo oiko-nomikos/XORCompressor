@@ -63,18 +63,6 @@ Set 2   11         = 0          => 1        {A, B}
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
-class SystemClock {
-  public:
-    inline long long getNanoseconds() {
-        auto now = std::chrono::system_clock::now();
-        return std::chrono::duration_cast<std::chrono::nanoseconds>(now.time_since_epoch()).count();
-    }
-};
-
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-
 class Functions {
   public:
     size_t nextPowerOf2(size_t n) {
@@ -88,38 +76,6 @@ class Functions {
         size_t target = nextPowerOf2(binary.size());
         binary.resize(target, '0');
         return binary;
-    }
-
-    std::string stringToBinaryASCII(const std::string &input) {
-        std::string binary;
-        binary.reserve(input.size() * 8);
-
-        for (char c : input) {
-            std::bitset<8> bits(static_cast<unsigned char>(c));
-            binary += bits.to_string();
-        }
-
-        while ((binary.size() & (binary.size() - 1)) != 0) {
-            binary.push_back('0');
-        }
-
-        return binary;
-    }
-
-    std::string binaryASCIIToString(const std::string &binary) {
-        if (binary.size() % 8 != 0) {
-            throw std::runtime_error("Binary length must be multiple of 8");
-        }
-
-        std::string output;
-        output.reserve(binary.size() / 8);
-
-        for (size_t i = 0; i < binary.size(); i += 8) {
-            std::bitset<8> bits(binary.substr(i, 8));
-            output.push_back(static_cast<char>(bits.to_ulong()));
-        }
-
-        return output;
     }
 
     // ----------------------------
