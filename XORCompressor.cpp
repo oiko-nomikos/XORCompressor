@@ -167,6 +167,29 @@ class Functions {
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
+class FileSystem {
+  public:
+    static void writeToFile(const std::string &filename, const std::string &content) {
+        std::ofstream out(filename);
+        if (!out)
+            throw std::runtime_error("Failed to open file");
+        out << content;
+    }
+
+    static std::string readFromFile(const std::string &filename) {
+        std::ifstream in(filename);
+        if (!in)
+            throw std::runtime_error("Failed to open file");
+        std::stringstream buffer;
+        buffer << in.rdbuf();
+        return buffer.str();
+    }
+};
+
+//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
+
 namespace CRYPTO {
 class SHA256 {
   public:
@@ -519,7 +542,7 @@ class XORCompress {
                 nextId++;
             }
 
-            uint16_t id = wordToId[w];
+            // uint16_t id = wordToId[w];
             positions[w].push_back(pos);
         }
 
@@ -774,7 +797,7 @@ class XORCompress {
   private:
     std::unordered_map<uint16_t, std::string> idToWord;
 
-    int bytesNeeded(uint16_t v) {
+    int bytesNeeded(uint32_t v) {
         if (v <= 0xFF)
             return 1;
         if (v <= 0xFFFF)
