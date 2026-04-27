@@ -2,37 +2,6 @@
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
-/*
------------------------------------
-FIRST ORDER SCHEMA
------------------------------------
-TWO ROWS VERSION
-Row A   01000000
-Row B   00100000
------------------------------------
-        01000000
-XOR  ⊕ 00100000
------------------------------------
-      = 01100000 (XOR Value)
------------------------------------
-ONE ROW VERSION
-Row {A, B} = {00},{10},{01},{00},{00},{00},{00},{00}
------------------------------------
-SECOND ORDER SCHEMA
------------------------------------
-XOR TABLE
-Set     Bit        XOR          Derived     Order
-        Order      Value        Key if...   (if {A, B} else {B, A})
--------------------------------------------------------------------
-Set 1   00         = 0          => 0        {B, A}
-Set 1   10         = 1          => 1        {A, B}
-Set 2   01         = 1          => 0        {B, A}
-Set 2   11         = 0          => 1        {A, B}
------------------------------------
-*/
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
-//----------------------------------------------------------------------------------
 // Header Files
 //----------------------------------------------------------------------------------
 
@@ -146,7 +115,7 @@ class FileSystem {
 //----------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------
 
-class XORCompress {
+class XORCompressor {
   public:
     struct Result {
         std::string key;
@@ -446,7 +415,7 @@ class XORCompress {
         return {bytesNeeded(maxId), bytesNeeded(maxPos)};
     }
 
-    inline void writeToFile(const std::string &filename, const XORCompress::Result &r) {
+    inline void writeToFile(const std::string &filename, const XORCompressor::Result &r) {
         std::ofstream out(filename);
         if (!out)
             throw std::runtime_error("Failed to open file");
@@ -462,12 +431,12 @@ class XORCompress {
         out << "\n==================================================\n";
     }
 
-    inline XORCompress::Result readFromFile(const std::string &filename) {
+    inline XORCompressor::Result readFromFile(const std::string &filename) {
         std::ifstream in(filename);
         if (!in)
             throw std::runtime_error("Failed to open file");
 
-        XORCompress::Result r;
+        XORCompressor::Result r;
         std::string line;
 
         enum class Section { NONE, KEY, XOR };
@@ -551,7 +520,7 @@ class UserInterface {
     }
 
   private:
-    XORCompress compressor;
+    XORCompressor compressor;
     FileSystem fileSystem;
     Functions utils;
 
