@@ -11,7 +11,6 @@
 #include <chrono>
 #include <mutex>
 #include <deque>
-#include <string>
 #include <utility>
 #include <stdexcept>
 #include <iomanip>
